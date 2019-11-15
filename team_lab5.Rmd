@@ -1,0 +1,144 @@
+---
+title: "Team"
+author: "Carlos A. Gonzalez"
+date: "11/11/2019"
+output: html_document
+---
+
+
+#1-4
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(classdata)
+library(tidyverse)
+
+read.table('diabetes.txt',header=TRUE)
+
+diabetes_reduced <- read.table("diabetes.txt", header=TRUE, na.strings=c("","NA"))
+
+
+diabetes_reduced[1]= NULL
+#bp.2s, and bp.2d 
+
+diabetes_reduced
+
+diabetes_reduced[14:15] = NULL
+
+diabetes_cleaned = diabetes_reduced
+
+
+diabetes_cleaned
+
+index.na=apply(is.na(diabetes_cleaned), 1, any) ## identify rows with missing value.
+
+head(diabetes_cleaned)
+nrow(diabetes_cleaned)
+
+diabetes_cleaned
+
+```
+5. use nrow to check how many rows there are also use head() to tell you how many rows there are.
+
+6.  The best way to fix the skewness would be to cut off some of the data.  The problem with that we will not see every single variable in the data set.
+```{r}
+ggplot(diabetes_cleaned, aes(glyhb)) + geom_histogram()
+
+#7.
+
+glyhb_star= filter(diabetes_cleaned,glyhb <= 7)
+glyhb_star
+
+ggplot(glyhb_star, aes(glyhb)) + geom_histogram()
+
+
+
+```
+8.
+
+```{r}
+summary(glyhb_star)
+
+```
+
+10.
+
+```{r}
+ diabetes_cleaned %>% group_by(frame,location) %>% summarise (mean.glyhb= mean(glyhb))
+```
+11.Our main variable of interest is glyhb_star. We want to understand its relationship with ratio, bp.1s, age, gender, hip and weight. Further explore how these variables interact and visualize your findings.
+
+```{r}
+ggplot(glyhb_star, aes(glyhb,hip)) + geom_col()
+
+ggplot(glyhb_star, aes(glyhb,bp.1s)) + geom_col()
+
+ggplot(glyhb_star, aes(glyhb,age)) + geom_col()
+
+ggplot(glyhb_star, aes(glyhb,gender)) + geom_col()
+
+ggplot(glyhb_star, aes(glyhb,weight)) + geom_col()
+
+ggplot(glyhb_star, aes(glyhb,ratio)) + geom_col()
+
+
+
+
+```
+12.
+
+```{r}
+ggplot(diabetes_cleaned,aes(y=weight,x=waist)) + geom_point(size = .001) + facet_wrap(~frame) +geom_jitter(colour = 'blue')
+```
+13. gather and spread may seem slightly unnatural to use at first, but they are very powerful functions that can transform data into the right format. Explain in your own words what the gather and spread functions do.
+
+Gather brings columns together that have similar values.  Spread moves rows into columns that have alike values.
+
+14.  Gather and spread are not complements because one brings columns together and then spread brings rows into columns
+```{r}
+fit = lm(glyhb ~stab.glu + age + waist + ratio+ factor(frame),data=diabetes_cleaned)
+ summary(fit)
+```
+15.
+
+The data shows that we have very low Standard deviation error which show the data have good values. This data shows that the R squared is .5899 and the F-Statistic is 88.45.  This data would not fit very well with a linear line  since R squared is very close to 50%.
+
+16.
+
+Interpret the estimated regression coefficient for each predictor in fit, regardless of whether or not the predictor is significant.
+
+
+The Regression Coefficient is positive so It will be going at a Positve rate.
+
+17.
+```{r}
+fit$fitted.values
+
+#It fit the vlaue of the true mean of Y.
+
+```
+18.  Explain the difference between inference and prediction.
+
+Inference is making an educated guess through facts and observations.  Prediction is making a guess on what might happen
+
+
+19.What are advantages/disadvantages to constructing a linear regression model as opposed to a 
+k-NN regression model?  Advantages would be that it easy to work with and it is easy to learn.  A Disadvantage would be that it only work with linear problems where as K-NN works with non linear problems.
+
+
+20.
+Reflection
+On your very first HW, I asked you what you think data science is. Have your views changed?
+
+
+The views of Data Science has not changed since we both have experience in the field.
+Discuss with your partner what you have found to be (1) most surprising about data science, (2) most challenging, and (3) most enjoyable. Write a brief paragraph addressing these points.
+
+1.  The most surprising thing about data science is that there is no one path.  Data keeps evolving so answers/solution may always change.
+
+2. The most challenging part of data science is cleaning the data and having it organized.
+
+3.  The most enjoyable part of data science is creating graphs and using our own style to present our findings.
+
+
