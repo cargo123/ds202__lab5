@@ -100,7 +100,4 @@ Gather brings columns together that have similar values.  Spread moves rows into
 fit = lm(glyhb ~stab.glu + age + waist + ratio+ factor(frame),data=diabetes_cleaned)
  summary(fit)
 ```
-15.
-
-The data shows that we have very low Standard deviation error which show the data have good values. This data shows that the R squared is .5899 and the F-Statistic is 88.45.  This data would not fit very well with a linear line  since R squared is very close to 50%.
 
